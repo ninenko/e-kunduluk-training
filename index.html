@@ -109,6 +109,7 @@ th.avg, td.avg { text-align: right; padding-right: 14px; }
 .gm-head .t { font-size: 17px; font-weight: 700; }
 .gm-head select { margin-left: auto; padding: 8px 12px; border-radius: 5px; border: 1px solid #cfd8e3; font-size: 13.5px; min-width: 190px; background: #fff; }
 .gm-head .close { width: 30px; height: 30px; border-radius: 50%; border: 2px solid rgba(255,255,255,.75); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px; }
+.gm-task:empty { display: none; }
 .gm-task { background: #fff8e1; border: 2px solid #ffd54a; border-radius: 8px; margin: 12px 18px 0; padding: 10px 14px; font-size: 13.5px; color: #6b4e00; display: flex; align-items: center; gap: 9px; }
 .gm-task .b { background: #f4a11a; color: #fff; border-radius: 6px; padding: 2px 9px; font-weight: 700; flex-shrink: 0; }
 .gm-sec { padding: 14px 18px; border-bottom: 1px solid #e6ecf2; }
@@ -161,7 +162,7 @@ th.avg, td.avg { text-align: right; padding-right: 14px; }
       <h1 id="topTitle">🎓 Тренажёр учителя. Задание 1: Выбери дату</h1>
       <button class="hint-top" onclick="openHint()">💡 Подсказка</button>
     </div>
-    <div class="progress-wrap">
+    <div class="progress-wrap" id="progressWrap">
       <div class="bar"><div class="bar-fill" id="barFill"></div></div>
       <div class="score" id="score">⭐ 0 / 9 · 0 очков</div>
     </div>
@@ -246,12 +247,13 @@ th.avg, td.avg { text-align: right; padding-right: 14px; }
 
   <!-- TASKS below the frame -->
   <div class="tasks">
-    <h2>📋 Задания</h2>
-    <div class="cur-task"><span class="badge" id="curNum">1</span><span id="curText">—</span></div>
+    <h2 id="tasksTitle">📋 Задания</h2>
+    <div class="cur-task" id="curTask"><span class="badge" id="curNum">1</span><span id="curText">—</span></div>
     <ul class="task-list" id="taskList"></ul>
     <div class="tools-row">
-      <button class="btn btn-white" onclick="openHint()">💡 Подсказка</button>
+      <button class="btn btn-white" id="hintBtn2" onclick="openHint()">💡 Подсказка</button>
       <button class="btn btn-grey" onclick="resetTrainer()">↺ Начать заново</button>
+      <button class="btn btn-blue" id="freeBtn" onclick="toggleFree()">🎮 Свободный режим</button>
     </div>
   </div>
 
@@ -336,7 +338,7 @@ const students = [
 const ORIG = JSON.parse(JSON.stringify(students.map(s=>s[1])));
 
 let sel = null, gradingOpen = false, saved = false;
-let draft = [], tool = null;
+let draft = [], tool = null, freeMode = false;
 
 const tb = document.querySelector('#tbl tbody');
 
@@ -472,6 +474,7 @@ let curStep = 0;
 const POINTS = 15;
 
 function tutorCheck(){
+  if (freeMode){ document.getElementById('gmTask').innerHTML=''; return; }
   let advanced = false;
   while (curStep < steps.length && steps[curStep].done()){
     curStep++; advanced = true;
@@ -620,6 +623,25 @@ function celebrate(){
       <div>Вы набрали <b>${steps.length*POINTS}</b> очков и освоили выставление оценок.</div>
     </div>`;
   document.getElementById('ov').classList.add('open');
+}
+
+function toggleFree(){
+  freeMode = !freeMode;
+  const show = freeMode ? 'none' : '';
+  document.getElementById('progressWrap').style.display = show;
+  document.getElementById('curTask').style.display = show;
+  document.getElementById('taskList').style.display = show;
+  document.getElementById('hintBtn2').style.display = show;
+  document.querySelector('.hint-top').style.display = show;
+  document.querySelector('.bulb').style.display = show;
+  document.getElementById('tasksTitle').textContent = freeMode ? '🎮 Свободный режим' : '📋 Задания';
+  document.getElementById('topTitle').innerHTML = freeMode
+    ? '🎓 Тренажёр учителя. Свободный режим — ставьте оценки как хотите'
+    : '🎓 Тренажёр учителя';
+  document.getElementById('freeBtn').innerHTML = freeMode ? '📋 Вернуться к заданиям' : '🎮 Свободный режим';
+  document.getElementById('freeBtn').className = 'btn ' + (freeMode ? 'btn-grey' : 'btn-blue');
+  document.getElementById('gmTask').innerHTML = '';
+  if (!freeMode) renderTasks();
 }
 
 function resetTrainer(){
