@@ -15,7 +15,10 @@ body {
 
 /* trainer header */
 .t-top { color: #fff; margin-bottom: 12px; }
-.t-top h1 { font-size: 20px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+.t-top .row1 { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+.t-top h1 { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+.hint-top { margin-left: auto; background: linear-gradient(180deg,#ffd84d,#ffb300); color: #5a3d00; border: none; border-radius: 8px; padding: 10px 18px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,.2); white-space: nowrap; }
+.hint-top:hover { filter: brightness(1.05); }
 .progress-wrap { display: flex; align-items: center; gap: 14px; }
 .bar { flex: 1; height: 16px; background: rgba(255,255,255,.28); border-radius: 20px; overflow: hidden; }
 .bar-fill { height: 100%; width: 0; background: linear-gradient(90deg,#ffe259,#28c76f); border-radius: 20px; transition: width .4s ease; }
@@ -84,7 +87,7 @@ th.avg, td.avg { text-align: right; padding-right: 14px; }
 .tasks h2 { font-size: 15px; margin-bottom: 4px; color: #1a3a6b; }
 .cur-task { background: #eaf3ff; border: 1px solid #b9d4f7; border-radius: 8px; padding: 12px 14px; font-size: 14px; margin: 10px 0 14px; display: flex; align-items: center; gap: 10px; }
 .cur-task .badge { background: #1a73e8; color: #fff; border-radius: 6px; padding: 3px 9px; font-weight: 700; flex-shrink: 0; }
-.task-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; }
+.task-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(5, auto); grid-auto-flow: column; gap: 6px 20px; }
 .task-list li { display: flex; align-items: center; gap: 9px; padding: 5px 0; font-size: 13px; color: #4a5b6c; }
 .task-list li .chk { width: 20px; height: 20px; border-radius: 50%; border: 2px solid #c3ccd6; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
 .task-list li.done { color: #1f8f4a; text-decoration: line-through; }
@@ -152,7 +155,10 @@ th.avg, td.avg { text-align: right; padding-right: 14px; }
 <div class="trainer">
 
   <div class="t-top">
-    <h1>🎓 Тренажёр учителя — выставление оценок в Э-Күндөлүк</h1>
+    <div class="row1">
+      <h1 id="topTitle">🎓 Тренажёр учителя. Задание 1: Выбери дату</h1>
+      <button class="hint-top" onclick="openHint()">💡 Подсказка</button>
+    </div>
     <div class="progress-wrap">
       <div class="bar"><div class="bar-fill" id="barFill"></div></div>
       <div class="score" id="score">⭐ 0 / 9 · 0 очков</div>
@@ -435,23 +441,23 @@ function valAt(i){
 }
 
 const steps = [
-  { t:'Выберите урок: кликните по столбцу с датой <b>22.10.2025</b> в журнале.',
+  { s:'Выбери дату', t:'Выберите урок: кликните по столбцу с датой <b>22.10.2025</b> в журнале.',
     done:()=> sel===5, hint:'pick' },
-  { t:'Нажмите синюю кнопку <b>«Выставление оценок»</b> над журналом.',
+  { s:'Открой окно оценок', t:'Нажмите синюю кнопку <b>«Выставление оценок»</b> над журналом.',
     done:()=> gradingOpen, hint:'open' },
-  { t:'Поставьте <b>Гарри</b> оценку <b>4</b> (выберите «4», затем «+» напротив Гарри).',
+  { s:'Поставь Гарри 4', t:'Поставьте <b>Гарри</b> оценку <b>4</b> (выберите «4», затем «+» напротив Гарри).',
     done:()=> valAt(0)==='4', hint:'setmark' },
-  { t:'Передумали! <b>Удалите</b> у Гарри оценку: нажмите 🗑, затем на его «4».',
+  { s:'Удали оценку у Гарри', t:'Передумали! <b>Удалите</b> у Гарри оценку: нажмите 🗑, затем на его «4».',
     done:()=> valAt(0)==='', hint:'del' },
-  { t:'Теперь поставьте <b>Гарри</b> оценку <b>5</b>.',
+  { s:'Поставь Гарри 5', t:'Теперь поставьте <b>Гарри</b> оценку <b>5</b>.',
     done:()=> valAt(0)==='5', hint:'setmark' },
-  { t:'Поставьте <b>Гермионе</b> оценку <b>5</b>.',
+  { s:'Поставь Гермионе 5', t:'Поставьте <b>Гермионе</b> оценку <b>5</b>.',
     done:()=> valAt(1)==='5', hint:'setmark' },
-  { t:'Поставьте <b>Рону</b> оценку <b>4</b>.',
+  { s:'Поставь Рону 4', t:'Поставьте <b>Рону</b> оценку <b>4</b>.',
     done:()=> valAt(2)==='4', hint:'setmark' },
-  { t:'Отметьте <b>Малфою</b> пропуск — оценка <b>НБ</b> (не был).',
+  { s:'Отметь Малфою пропуск', t:'Отметьте <b>Малфою</b> пропуск — оценка <b>НБ</b> (не был).',
     done:()=> valAt(3)==='НБ', hint:'setnb' },
-  { t:'Нажмите зелёную кнопку <b>«Сохранить все»</b>.',
+  { s:'Сохрани оценки', t:'Нажмите зелёную кнопку <b>«Сохранить все»</b>.',
     done:()=> saved===true, hint:'save' }
 ];
 let curStep = 0;
@@ -471,6 +477,9 @@ function renderTasks(){
   document.getElementById('barFill').style.width = (done/steps.length*100)+'%';
   document.getElementById('score').textContent = `⭐ ${done} / ${steps.length} · ${done*POINTS} очков`;
   const cur = steps[Math.min(curStep, steps.length-1)];
+  document.getElementById('topTitle').innerHTML = curStep>=steps.length
+    ? '🎓 Тренажёр учителя. Готово! 🎉'
+    : `🎓 Тренажёр учителя. Задание ${curStep+1}: ${cur.s}`;
   document.getElementById('curNum').textContent = curStep>=steps.length ? '✓' : (curStep+1);
   document.getElementById('curText').innerHTML = curStep>=steps.length
     ? '🎉 Все задания выполнены! Отличная работа.' : cur.t;
