@@ -3,31 +3,54 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Э-Күндөлүк — тренажёр учителя</title>
+<title>Заманбап Мугалим — тренажёр учителя (Э-Күндөлүк)</title>
+<link rel="icon" href="assets/favicon.svg">
 <style>
+@font-face{ font-family:"Q3 DIN Condensed"; src:url("assets/Q3_DIN_Condensed.ttf") format("truetype"); font-weight:400; font-style:normal; font-display:swap; }
+:root{
+  --tfk-green:#99AF82; --tfk-green-dark:#73875D; --tfk-yellow:#FFC607;
+  --tfk-black:#000000; --tfk-white:#FFFFFF; --tfk-ink:#1c211a;
+  --display:"Q3 DIN Condensed","Arial Narrow",Arial,sans-serif;
+}
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  font-family: "Segoe UI", Roboto, Arial, sans-serif;
-  background: linear-gradient(135deg, #1a5cff 0%, #00d4ff 100%);
-  min-height: 100vh; padding: 16px; font-size: 13px; color: #24292e;
+  font-family: "Segoe UI", Calibri, Arial, sans-serif;
+  background: var(--tfk-green);
+  min-height: 100vh; padding: 0; font-size: 13px; color: var(--tfk-ink);
+  position: relative;
 }
-.trainer { max-width: 1520px; margin: 0 auto; }
+/* faint emblem watermark in the page background */
+body::before{
+  content:""; position: fixed; right: -40px; bottom: -30px; width: 46vh; height: 46vh;
+  background: url("assets/emblem-white.svg") no-repeat center/contain;
+  opacity: .10; pointer-events: none; z-index: 0;
+}
+.trainer { max-width: 1520px; margin: 0 auto; padding: 18px 16px 40px; position: relative; z-index: 1; }
+
+/* brand header band */
+.brand-bar { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
+.brand-bar .lockup { height: 46px; }
+.brand-bar .squares { margin-left: auto; display: grid; grid-template-columns: repeat(3, 12px); grid-auto-rows: 12px; gap: 3px; }
+.brand-bar .squares i { background: var(--tfk-yellow); display: block; }
+.brand-bar .squares i.off { background: transparent; }
 
 /* trainer header */
-.t-top { color: #fff; margin-bottom: 12px; }
-.t-top .row1 { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
-.t-top h1 { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
-.hint-top { margin-left: auto; background: linear-gradient(180deg,#ffd84d,#ffb300); color: #5a3d00; border: none; border-radius: 8px; padding: 10px 18px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,.2); white-space: nowrap; }
-.hint-top:hover { filter: brightness(1.05); }
+.t-top { color: var(--tfk-white); margin-bottom: 14px; }
+.t-top .row1 { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
+.t-top h1 { font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: .5px; font-size: 30px; line-height: 1.05; display: flex; align-items: center; gap: 10px; }
+.hint-top { margin-left: auto; background: var(--tfk-yellow); color: var(--tfk-black); border: none; border-radius: 0; padding: 11px 20px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.hint-top:hover { background: #ffd53b; }
 .progress-wrap { display: flex; align-items: center; gap: 14px; }
-.bar { flex: 1; height: 16px; background: rgba(255,255,255,.28); border-radius: 20px; overflow: hidden; }
-.bar-fill { height: 100%; width: 0; background: linear-gradient(90deg,#ffe259,#28c76f); border-radius: 20px; transition: width .4s ease; }
-.score { font-weight: 700; white-space: nowrap; font-size: 14px; }
+.bar { flex: 1; height: 14px; background: rgba(255,255,255,.35); border-radius: 0; overflow: hidden; }
+.bar-fill { height: 100%; width: 0; background: var(--tfk-yellow); border-radius: 0; transition: width .4s ease; }
+.score { font-weight: 700; white-space: nowrap; font-size: 14px; color: var(--tfk-white); }
 
-/* frame */
-.frame { border: 6px solid #ffffff; border-radius: 14px; background: #cfe0f5; padding: 6px; box-shadow: 0 8px 30px rgba(0,0,0,.25); }
-.frame-label { color: #34495e; font-size: 12px; font-weight: 600; padding: 4px 8px 8px; display: flex; align-items: center; gap: 6px; }
-.app { background: #fff; border-radius: 6px; overflow: hidden; }
+/* frame — brand rectilinear */
+.frame { border: 4px solid var(--tfk-black); border-radius: 0; background: var(--tfk-white); padding: 8px; position: relative; }
+.frame::after { content:""; position: absolute; top: -4px; right: -4px; width: 26px; height: 26px; background: var(--tfk-yellow); }
+.frame-label { font-family: var(--display); text-transform: uppercase; letter-spacing: .6px; color: var(--tfk-black); font-size: 15px; padding: 4px 6px 10px; display: flex; align-items: center; gap: 8px; }
+.frame-label .em { width: 16px; height: 18px; display: inline-block; background: url("assets/emblem-black.svg") no-repeat center/contain; }
+.app { background: #fff; border-radius: 6px; overflow: hidden; border: 1px solid #e3e8ee; }
 
 /* ===== app (same as real interface) ===== */
 .topbar { background: linear-gradient(90deg, #1666e0, #1a8fe8); color: #fff; display: flex; align-items: center; gap: 14px; padding: 10px 18px; }
@@ -83,10 +106,11 @@ th.avg, td.avg { text-align: right; padding-right: 14px; }
 .dash { color: #9aa7b4; }
 
 /* ===== tasks panel (below frame) ===== */
-.tasks { background: #fff; border-radius: 12px; margin-top: 14px; padding: 16px 18px; box-shadow: 0 6px 20px rgba(0,0,0,.18); position: relative; }
-.tasks h2 { font-size: 15px; margin-bottom: 4px; color: #1a3a6b; }
-.cur-task { background: #eaf3ff; border: 1px solid #b9d4f7; border-radius: 8px; padding: 12px 14px; font-size: 14px; margin: 10px 0 14px; display: flex; align-items: center; gap: 10px; }
-.cur-task .badge { background: #1a73e8; color: #fff; border-radius: 6px; padding: 3px 9px; font-weight: 700; flex-shrink: 0; }
+.tasks { background: #fff; border-radius: 0; margin-top: 16px; padding: 16px 18px; position: relative; border: 1px solid var(--tfk-black); border-left: 8px solid var(--tfk-green); }
+.tasks h2 { font-family: var(--display); text-transform: uppercase; letter-spacing: .5px; font-weight: 400; font-size: 20px; margin-bottom: 6px; color: var(--tfk-black); }
+.cur-task { background: #eef3e8; border: 1px solid var(--tfk-green); border-radius: 0; padding: 12px 14px; font-size: 14px; margin: 10px 0 14px; display: flex; align-items: center; gap: 10px; }
+.cur-task .badge { background: var(--tfk-green-dark); color: #fff; border-radius: 0; padding: 4px 10px; font-weight: 700; flex-shrink: 0; }
+.tools-row .btn { border-radius: 0; }
 .task-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(6, auto); grid-auto-flow: column; gap: 6px 20px; }
 .task-list li { display: flex; align-items: center; gap: 9px; padding: 5px 0; font-size: 13px; color: #4a5b6c; }
 .task-list li .chk { width: 20px; height: 20px; border-radius: 50%; border: 2px solid #c3ccd6; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
@@ -95,6 +119,11 @@ th.avg, td.avg { text-align: right; padding-right: 14px; }
 .task-list li.active { color: #1a3a6b; font-weight: 600; }
 .task-list li.active .chk { border-color: #1a73e8; box-shadow: 0 0 0 3px rgba(26,115,232,.18); }
 .tools-row { margin-top: 14px; display: flex; gap: 10px; }
+
+/* footer attribution */
+.tfk-foot { margin-top: 20px; color: var(--tfk-white); font-size: 13px; padding: 12px 4px; border-top: 2px solid rgba(255,255,255,.5); }
+.tfk-foot a { color: var(--tfk-white); font-weight: 700; text-decoration: underline; }
+.tfk-foot a:hover { color: var(--tfk-black); }
 
 /* lightbulb */
 .bulb { position: fixed; right: 26px; bottom: 26px; width: 62px; height: 62px; border-radius: 50%; background: linear-gradient(180deg,#ffd84d,#ffb300); border: none; font-size: 30px; cursor: pointer; box-shadow: 0 6px 18px rgba(0,0,0,.3); z-index: 40; animation: pulse 2s infinite; }
@@ -157,9 +186,20 @@ th.avg, td.avg { text-align: right; padding-right: 14px; }
 <body>
 <div class="trainer">
 
+  <div class="brand-bar">
+    <a href="https://teachforkyrgyzstan.org/" target="_blank" rel="noopener">
+      <img class="lockup" src="assets/lockup-white.svg" alt="Заманбап Мугалим — Teach for Kyrgyzstan">
+    </a>
+    <div class="squares" aria-hidden="true">
+      <i></i><i class="off"></i><i></i>
+      <i class="off"></i><i></i><i class="off"></i>
+      <i></i><i class="off"></i><i></i>
+    </div>
+  </div>
+
   <div class="t-top">
     <div class="row1">
-      <h1 id="topTitle">🎓 Тренажёр учителя. Задание 1: Выбери дату</h1>
+      <h1 id="topTitle">Тренажёр учителя. Задание 1: Выбери дату</h1>
       <button class="hint-top" onclick="openHint()">💡 Подсказка</button>
     </div>
     <div class="progress-wrap" id="progressWrap">
@@ -170,7 +210,7 @@ th.avg, td.avg { text-align: right; padding-right: 14px; }
 
   <!-- FRAME: only the interface inside, no hints -->
   <div class="frame">
-    <div class="frame-label">🖥️ Рабочий экран Э-Күндөлүк</div>
+    <div class="frame-label"><span class="em"></span> Рабочий экран Э-Күндөлүк</div>
     <div class="app">
 
       <div class="topbar">
@@ -256,6 +296,11 @@ th.avg, td.avg { text-align: right; padding-right: 14px; }
       <button class="btn btn-blue" id="freeBtn" onclick="toggleFree()">🎮 Свободный режим</button>
     </div>
   </div>
+
+  <footer class="tfk-foot">
+    Создано <a href="https://teachforkyrgyzstan.org/" target="_blank" rel="noopener">Заманбап Мугалим</a>
+    на основе интерфейса Э-Күндөлүк
+  </footer>
 
 </div>
 
