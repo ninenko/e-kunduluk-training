@@ -247,12 +247,12 @@ th.avg, td.avg { text-align: right; padding-right: 14px; }
                 <div class="card"><div class="lbl">&#128209; Предмет</div><div class="val">Магия и заклинания</div></div>
                 <div class="card"><div class="lbl">&#128104;&#8205;&#127979; Учитель</div><div class="val">Дамблдорова А. К.</div></div>
                 <div class="card"><div class="lbl">&#127891; Класс</div><div class="val">7Г</div></div>
-                <div class="card"><div class="lbl">&#128197; Дата</div><div class="val">22.10.2025</div></div>
-                <div class="card"><div class="lbl">&#128336; Урок</div><div class="val">2-й урок (08:50–09:35)</div></div>
+                <div class="card"><div class="lbl">&#128197; Дата</div><div class="val" id="lDate">22.10.2025</div></div>
+                <div class="card"><div class="lbl">&#128336; Урок</div><div class="val" id="lLesson">2-й урок (08:50–09:35)</div></div>
               </div>
               <div class="two">
-                <div class="card"><div class="lbl">&#128214; Тема</div><div class="val">Жазуу иштери. "Экспелиармус" боюнча дил баян жазуу</div></div>
-                <div class="card"><div class="lbl">&#9999;&#65039; Задание</div><div class="val">дил баянды бүтүрүп келүү</div></div>
+                <div class="card"><div class="lbl">&#128214; Тема</div><div class="val" id="lTopic">—</div></div>
+                <div class="card"><div class="lbl">&#9999;&#65039; Задание</div><div class="val" id="lTask">—</div></div>
               </div>
             </div>
           </div>
@@ -387,6 +387,23 @@ const students = [
 ];
 const ORIG = JSON.parse(JSON.stringify(students.map(s=>s[1])));
 
+/* урок по датам — темы меняются, задания похожие */
+const LESSONS = [
+  { date:'10.09.2025', lesson:'1-й урок (08:00–08:45)', topic:'Кириш сабак. Хогвартс сыйкырчылык мектебине саякат', task:'суроолорго жооп берип келүү' },
+  { date:'17.09.2025', lesson:'3-й урок (09:40–10:25)', topic:'"Люмос" сыйкыры жөнүндө аңгеме окуу', task:'жаңы сөздөрдү жаттап келүү' },
+  { date:'24.09.2025', lesson:'2-й урок (08:50–09:35)', topic:'"Вингардиум Левиоса" боюнча дил баян жазуу', task:'дил баянды жазып келүү' },
+  { date:'01.10.2025', lesson:'4-й урок (10:35–11:20)', topic:'Квиддич оюну боюнча аңгеме талкуулоо', task:'текстти окуп, план түзүп келүү' },
+  { date:'08.10.2025', lesson:'2-й урок (08:50–09:35)', topic:'"Патронус" сыйкыры жөнүндө ой жүгүртүү', task:'дил баянды бүтүрүп келүү' },
+  { date:'22.10.2025', lesson:'2-й урок (08:50–09:35)', topic:'Жазуу иштери. "Экспелиармус" боюнча дил баян жазуу', task:'дил баянды бүтүрүп келүү' }
+];
+function updateLesson(i){
+  const L = LESSONS[(i===null||i===undefined) ? 5 : i];
+  document.getElementById('lDate').textContent   = L.date;
+  document.getElementById('lLesson').textContent = L.lesson;
+  document.getElementById('lTopic').textContent  = L.topic;
+  document.getElementById('lTask').textContent   = L.task;
+}
+
 let sel = null, gradingOpen = false, saved = false;
 let draft = [], tool = null, freeMode = false;
 
@@ -415,6 +432,7 @@ function pick(i){
     th.classList.toggle('sel', +th.dataset.i === sel);
   });
   document.getElementById('gradeBtn').style.display = sel===null ? 'none' : 'flex';
+  updateLesson(sel);
   render();
   tutorCheck();
 }
@@ -700,13 +718,13 @@ function resetTrainer(){
   document.querySelectorAll('th.date').forEach(th=>th.classList.remove('sel'));
   document.querySelector('#ov .modal-head').className = 'modal-head blue';
   closeM();
-  render(); renderTasks();
+  updateLesson(null); render(); renderTasks();
 }
 
 document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeM(); closeGrading(); closeHint(); } });
 document.getElementById('gm').addEventListener('click', e=>{ if(e.target.id==='gm') closeGrading(); });
 
-render(); renderTasks();
+updateLesson(null); render(); renderTasks();
 </script>
 </body>
 </html>
