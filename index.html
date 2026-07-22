@@ -37,14 +37,14 @@ body::before{
 /* trainer header */
 .t-top { color: var(--tfk-white); margin-bottom: 14px; }
 .t-top .row1 { display: flex; align-items: center; gap: 14px; margin-bottom: 12px; }
-.t-top h1 { font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: .5px; font-size: 30px; line-height: 1.05; display: flex; align-items: center; gap: 10px; }
-.hint-top { margin-left: auto; background: var(--tfk-yellow); color: var(--tfk-black); border: none; border-radius: 0; padding: 11px 20px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.t-top h1 { font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: .5px; font-size: 28px; line-height: 1.05; white-space: nowrap; flex-shrink: 0; display: flex; align-items: center; gap: 10px; }
+.hint-top { flex-shrink: 0; background: var(--tfk-yellow); color: var(--tfk-black); border: none; border-radius: 0; padding: 11px 20px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
 .hint-top:hover { background: #ffd53b; }
 
 /* framed current task */
-.top-task-box { background: var(--tfk-white); border: 3px solid var(--tfk-yellow); border-left: 10px solid var(--tfk-yellow); border-radius: 0; padding: 12px 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; color: var(--tfk-ink); }
+.top-task-box { flex: 1; min-width: 0; background: var(--tfk-white); border: 3px solid var(--tfk-yellow); border-left: 10px solid var(--tfk-yellow); border-radius: 0; padding: 9px 14px; display: flex; align-items: center; gap: 12px; color: var(--tfk-ink); }
 .top-task-box .tb-num { background: var(--tfk-black); color: var(--tfk-white); font-family: var(--display); text-transform: uppercase; letter-spacing: .5px; padding: 5px 12px; font-size: 15px; flex-shrink: 0; }
-.top-task-box .tb-txt { font-size: 16px; font-weight: 600; }
+.top-task-box .tb-txt { font-size: 16px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .progress-wrap { display: flex; align-items: center; gap: 14px; }
 .bar { flex: 1; height: 14px; background: rgba(255,255,255,.35); border-radius: 0; overflow: hidden; }
 .bar-fill { height: 100%; width: 0; background: var(--tfk-yellow); border-radius: 0; transition: width .4s ease; }
@@ -204,10 +204,10 @@ th.avg, td.avg { text-align: right; padding-right: 14px; }
 
   <div class="t-top">
     <div class="row1">
-      <h1 id="topTitle">Э-Күндөлүк</h1>
+      <h1 id="topTitle">Тренажёр Э-Күндөлүк</h1>
+      <div class="top-task-box" id="topTaskBox"></div>
       <button class="hint-top" onclick="openHint()">💡 Подсказка</button>
     </div>
-    <div class="top-task-box" id="topTaskBox"></div>
     <div class="progress-wrap" id="progressWrap">
       <div class="bar"><div class="bar-fill" id="barFill"></div></div>
       <div class="score" id="score">⭐ 0 / 9 · 0 очков</div>
