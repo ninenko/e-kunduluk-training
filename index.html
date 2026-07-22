@@ -455,8 +455,10 @@ const steps = [
     done:()=> valAt(1)==='5', hint:'setmark' },
   { s:'Поставь Рону 4', t:'Поставьте <b>Рону</b> оценку <b>4</b>.',
     done:()=> valAt(2)==='4', hint:'setmark' },
-  { s:'Отметь Малфою пропуск', t:'Отметьте <b>Малфою</b> пропуск — оценка <b>НБ</b> (не был).',
-    done:()=> valAt(3)==='НБ', hint:'setnb' },
+  { s:'Отметь Фродо пропуск', t:'Отметьте <b>Фродо</b> пропуск — оценка <b>НБ</b> (не был).',
+    done:()=> valAt(10)==='НБ', hint:'setnb' },
+  { s:'Отметь Гэндальфу опоздание', t:'Отметьте <b>Гэндальфу</b> опоздание — оценка <b>Опоз</b>.',
+    done:()=> valAt(11)==='Опоз', hint:'setopoz' },
   { s:'Сохрани оценки', t:'Нажмите зелёную кнопку <b>«Сохранить все»</b>.',
     done:()=> saved===true, hint:'save' }
 ];
@@ -527,9 +529,21 @@ const ILL = {
     <rect x="10" y="26" width="52" height="34" rx="4" fill="#1a73e8"/>
     <text x="36" y="49" fill="#fff" font-size="14" text-anchor="middle" font-weight="bold">НБ</text>
     ${svgCursor(44,60)}
-    <text x="10" y="90" font-size="11" fill="#2c3e50" font-weight="bold">2) нажать + напротив Малфоя</text>
+    <text x="10" y="90" font-size="11" fill="#2c3e50" font-weight="bold">2) нажать + напротив Фродо</text>
     <rect x="10" y="98" width="230" height="26" rx="5" fill="#fff" stroke="#e2e8f0"/>
-    <text x="20" y="115" font-size="11" fill="#333">👤 Драко Малфоев…</text>
+    <text x="20" y="115" font-size="11" fill="#333">👤 Фродо Баггинбеков…</text>
+    <rect x="248" y="98" width="40" height="26" rx="4" fill="none" stroke="#1a73e8" stroke-dasharray="3"/>
+    <text x="268" y="116" fill="#1a73e8" font-size="16" text-anchor="middle">+</text>
+    ${svgCursor(272,120)}
+  </svg>`,
+  setopoz: `<svg viewBox="0 0 340 130">
+    <text x="10" y="18" font-size="11" fill="#2c3e50" font-weight="bold">1) выбрать «Опоз» (опоздание)</text>
+    <rect x="10" y="26" width="60" height="34" rx="4" fill="#1a73e8"/>
+    <text x="40" y="48" fill="#fff" font-size="13" text-anchor="middle" font-weight="bold">Опоз</text>
+    ${svgCursor(48,60)}
+    <text x="10" y="90" font-size="11" fill="#2c3e50" font-weight="bold">2) нажать + напротив Гэндальфа</text>
+    <rect x="10" y="98" width="230" height="26" rx="5" fill="#fff" stroke="#e2e8f0"/>
+    <text x="20" y="115" font-size="11" fill="#333">👤 Гэндальф Акбашев…</text>
     <rect x="248" y="98" width="40" height="26" rx="4" fill="none" stroke="#1a73e8" stroke-dasharray="3"/>
     <text x="268" y="116" fill="#1a73e8" font-size="16" text-anchor="middle">+</text>
     ${svgCursor(272,120)}
