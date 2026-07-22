@@ -40,6 +40,11 @@ body::before{
 .t-top h1 { font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: .5px; font-size: 30px; line-height: 1.05; display: flex; align-items: center; gap: 10px; }
 .hint-top { margin-left: auto; background: var(--tfk-yellow); color: var(--tfk-black); border: none; border-radius: 0; padding: 11px 20px; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
 .hint-top:hover { background: #ffd53b; }
+
+/* framed current task */
+.top-task-box { background: var(--tfk-white); border: 3px solid var(--tfk-yellow); border-left: 10px solid var(--tfk-yellow); border-radius: 0; padding: 12px 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; color: var(--tfk-ink); }
+.top-task-box .tb-num { background: var(--tfk-black); color: var(--tfk-white); font-family: var(--display); text-transform: uppercase; letter-spacing: .5px; padding: 5px 12px; font-size: 15px; flex-shrink: 0; }
+.top-task-box .tb-txt { font-size: 16px; font-weight: 600; }
 .progress-wrap { display: flex; align-items: center; gap: 14px; }
 .bar { flex: 1; height: 14px; background: rgba(255,255,255,.35); border-radius: 0; overflow: hidden; }
 .bar-fill { height: 100%; width: 0; background: var(--tfk-yellow); border-radius: 0; transition: width .4s ease; }
@@ -199,9 +204,10 @@ th.avg, td.avg { text-align: right; padding-right: 14px; }
 
   <div class="t-top">
     <div class="row1">
-      <h1 id="topTitle">Тренажёр учителя. Задание 1: Выбери дату</h1>
+      <h1 id="topTitle">Э-Күндөлүк</h1>
       <button class="hint-top" onclick="openHint()">💡 Подсказка</button>
     </div>
+    <div class="top-task-box" id="topTaskBox"></div>
     <div class="progress-wrap" id="progressWrap">
       <div class="bar"><div class="bar-fill" id="barFill"></div></div>
       <div class="score" id="score">⭐ 0 / 9 · 0 очков</div>
@@ -210,7 +216,6 @@ th.avg, td.avg { text-align: right; padding-right: 14px; }
 
   <!-- FRAME: only the interface inside, no hints -->
   <div class="frame">
-    <div class="frame-label"><span class="em"></span> Рабочий экран Э-Күндөлүк</div>
     <div class="app">
 
       <div class="topbar">
@@ -533,9 +538,9 @@ function renderTasks(){
   document.getElementById('barFill').style.width = (done/steps.length*100)+'%';
   document.getElementById('score').textContent = `⭐ ${done} / ${steps.length} · ${done*POINTS} очков`;
   const cur = steps[Math.min(curStep, steps.length-1)];
-  document.getElementById('topTitle').innerHTML = curStep>=steps.length
-    ? '🎓 Тренажёр учителя. Готово! 🎉'
-    : `🎓 Тренажёр учителя. Задание ${curStep+1}: ${cur.s}`;
+  document.getElementById('topTaskBox').innerHTML = curStep>=steps.length
+    ? '<span class="tb-num">✓</span><span class="tb-txt">Все задания выполнены! 🎉</span>'
+    : `<span class="tb-num">Задание ${curStep+1}</span><span class="tb-txt">${cur.s}</span>`;
   document.getElementById('curNum').textContent = curStep>=steps.length ? '✓' : (curStep+1);
   document.getElementById('curText').innerHTML = curStep>=steps.length
     ? '🎉 Все задания выполнены! Отличная работа.' : cur.t;
@@ -674,15 +679,13 @@ function toggleFree(){
   freeMode = !freeMode;
   const show = freeMode ? 'none' : '';
   document.getElementById('progressWrap').style.display = show;
+  document.getElementById('topTaskBox').style.display = show;
   document.getElementById('curTask').style.display = show;
   document.getElementById('taskList').style.display = show;
   document.getElementById('hintBtn2').style.display = show;
   document.querySelector('.hint-top').style.display = show;
   document.querySelector('.bulb').style.display = show;
   document.getElementById('tasksTitle').textContent = freeMode ? '🎮 Свободный режим' : '📋 Задания';
-  document.getElementById('topTitle').innerHTML = freeMode
-    ? '🎓 Тренажёр учителя. Свободный режим — ставьте оценки как хотите'
-    : '🎓 Тренажёр учителя';
   document.getElementById('freeBtn').innerHTML = freeMode ? '📋 Вернуться к заданиям' : '🎮 Свободный режим';
   document.getElementById('freeBtn').className = 'btn ' + (freeMode ? 'btn-grey' : 'btn-blue');
   document.getElementById('gmTask').innerHTML = '';
